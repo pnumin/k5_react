@@ -1,7 +1,9 @@
+import Like from "../04/Like";
 import style from './FrontEnd.module.css' ;
 
 function FrontArticle({title, href, content}) {
   return (
+    <>
     <article className={style.divArticle} id='divHtml'>
       <h2>{title}</h2>
       <div>
@@ -13,6 +15,8 @@ function FrontArticle({title, href, content}) {
         </p>
       </div>
     </article>
+    <Like />
+    </>
   )
 }
 
