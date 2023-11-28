@@ -1,21 +1,32 @@
-import style from './Lotto.module.css' ;
+import style from './Lotto.module.css' ; 
+import { useState , useEffect } from 'react';
 
 export default function Lotto() {
+  // let tags = "Lotto번호 생성기"
+  const [tags, setTags] = useState() ;
+
+  const handleClick = (n) => {
+    // tags = Math.floor(Math.random()*45) + 1 ;
+    setTags(Math.floor(Math.random()*45) + 1)
+  }
+
+  useEffect(() => {
+    setTags("Lotto번호 생성기") ;
+  }, []) ;
+
+  useEffect(()=>{
+    console.log(tags)
+  }, [tags]) ;
+
   return (
-    <main className={style.m}>
-    <section className={style.sec}>
-      <form className={style.fm}>
-        <div className={style.fdiv}>
-          <div className={style.div1} id='d1'>
-          </div>
-        </div> 
-        <div className={style.fdiv}>
-          <div className={style.div1} id='d2'>
-            <button className={style.bt}>로또번호생성</button>
-          </div>
-        </div> 
-      </form>
-    </section>
-    </main>
+      <div>
+       <div >
+          <p className={style.divp}>{tags}</p>
+       </div>
+       <div>
+          <button onClick={handleClick}>Lotto번호생성</button> 
+       </div>
+       
+    </div>
   )
 }
