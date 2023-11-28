@@ -7,7 +7,27 @@ export default function Lotto() {
 
   const handleClick = (n) => {
     // tags = Math.floor(Math.random()*45) + 1 ;
-    setTags(Math.floor(Math.random()*45) + 1)
+    let lottoNum = [] ;
+
+    while(lottoNum.length < 7) {
+      let n = Math.floor(Math.random()*45) + 1 ;
+
+      if (!lottoNum.includes(n)) lottoNum.push(n) ;
+    }
+
+    //+추가
+    lottoNum.splice(6, 0, '+') ;
+
+    let tmTags = lottoNum.map((item, idx) => 
+      (item === '+')
+      ? <span key={`sp${idx}`} className={style.spp}>{item}</span>
+      : <span key={`sp${idx}`} className={style[`sp${Math.floor(item/10)}`]}>
+        {item}
+        </span>
+    ) ;
+    console.log(tmTags) ;
+
+    setTags(tmTags) ;
   }
 
   useEffect(() => {
@@ -15,16 +35,18 @@ export default function Lotto() {
   }, []) ;
 
   useEffect(()=>{
-    console.log(tags)
+    // console.log(tags)
   }, [tags]) ;
 
   return (
-      <div>
-       <div >
-          <p className={style.divp}>{tags}</p>
+      <div className={style.divLotto}>
+       <div className={style.d1}>
+          <p className={style.divp}>
+            {tags}
+          </p>
        </div>
-       <div>
-          <button onClick={handleClick}>Lotto번호생성</button> 
+       <div className={style.d1}>
+          <button className={style.bt} onClick={handleClick}>Lotto번호생성</button> 
        </div>
        
     </div>
