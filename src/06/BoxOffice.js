@@ -1,53 +1,92 @@
 import { BiCameraMovie } from "react-icons/bi";
 import TailH1 from "../UI/TailH1";
+import { useEffect, useState } from "react";
 
 export default function BoxOffice() {
+  const [trs, setTrs] = useState();
+  const [boxlist, setBoxlist] = useState();
+
+  useEffect(() => {
+    //환경변수값 가져오기
+    let apikey = process.env.REACT_APP_BOXOFFICE;
+
+    // console.log(apikey)
+    let url = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?"
+    url = url + `key=${apikey}`
+    url = url + `&targetDt=20231129`;
+
+    // console.log(url) ;
+    fetch(url)
+      .then(resp => resp.json())
+      .then(data => setBoxlist(data.boxOfficeResult.dailyBoxOfficeList))
+      .catch(err => console.log(err))
+
+  }, []);
+
+  //boxlist 변경시 실행
+  useEffect(() => {
+
+    // console.log(boxlist)
+    (boxlist === undefined)
+      ? setTrs(<tr>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>)
+      : setTrs(boxlist.map((item) =>
+        <tr key={item.movieCd} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 hover:text-stone-950 hover:font-bold dark:hover:bg-gray-600">
+          <td className="px-6 py-4">
+            <span className="inline-flex justify-center items-center w-5 h-5 bg-slate-500 text-white rounded-md mx-2">
+              {item.rank}
+            </span> 
+            {item.movieNm}
+          </td>
+          <td className="px-6 py-4 text-right">
+            {parseInt(item.salesAmt).toLocaleString('ko-KR')}원
+          </td>
+          <td className="px-6 py-4 text-right">
+            {parseInt(item.audiCnt).toLocaleString('ko-KR')}명
+          </td>
+          <td className="px-6 py-4 ">
+            {
+              ( parseInt(item.rankInten) > 0 )
+              ?  <span className="text-red-600">▲{item.rankInten}</span>  
+              : ( parseInt(item.rankInten) < 0 ) 
+                ?  <span className="text-sky-600">▼{Math.abs(item.rankInten)}</span> 
+                : "-"
+            }
+          </td>
+        </tr>)
+      );
+  }, [boxlist]);
+
   return (
     <div className="container mx-auto h-screen">
       <div className="flex flex-col justify-center items-center w-full h-full">
         <div className="flex m-8">
-          <BiCameraMovie className="text-5xl text-sky-800 mx-3"/>
-          <TailH1 title="박스오피스" /> 
+          <BiCameraMovie className="text-5xl text-sky-800 mx-3" />
+          <TailH1 title="박스오피스" />
         </div>
         <div className="relative overflow-x-auto w-3/4 shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <thead className="text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="px-6 py-3">
-                  Product name
+                  영화명
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Color
+                  매출액
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Category
+                  관객수
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Price
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  <span className="sr-only">Edit</span>
+                  증감율
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  Apple MacBook Pro 17"
-                </th>
-                <td className="px-6 py-4">
-                  Silver
-                </td>
-                <td className="px-6 py-4">
-                  Laptop
-                </td>
-                <td className="px-6 py-4">
-                  $2999
-                </td>
-                <td className="px-6 py-4 text-right">
-                  <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                </td>
-              </tr>
+              {trs}
             </tbody>
           </table>
         </div>
