@@ -37,12 +37,12 @@ export default function Frcst() {
 
     tm = tm.map((item, idx) => 
           <div key={`dt${idx}`} className="flex flex-col justify-center items-center 
-                                           bg-sky-700 p-0.5
+                                           bg-gray-100 p-0.5
                                            rounded-sm">
-            <div className="bg-sky-600 text-white p-2 mx-1 w-full flex justify-center items-center">
+            <div className="bg-gray-300 text-slate-800 font-bold p-2 mx-1 w-full flex justify-center items-center">
               {item[0]}
             </div>
-            <div className="bg-sky-50 bg-sky-700 font-bold p-2 w-full flex justify-center items-center">
+            <div className="bg-gray-50 bg-gray-100 font-bold p-2 w-full flex justify-center items-center">
               {
                 (item[1].trim() === '낮음')
                 ? <span className='text-blue-700'>{item[1]}</span>
