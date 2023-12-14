@@ -1,26 +1,47 @@
 import { BiCameraMovie } from "react-icons/bi";
 import TailH1 from "../UI/TailH1";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function BoxOffice() {
   const [trs, setTrs] = useState();
   const [boxlist, setBoxlist] = useState();
+  const [yesterday, setYesterday] = useState(); 
+  const rfDt = useRef() ;
 
-  useEffect(() => {
+  const getFetchData = (dt) => {
     //환경변수값 가져오기
     let apikey = process.env.REACT_APP_BOXOFFICE;
 
     // console.log(apikey)
     let url = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?"
     url = url + `key=${apikey}`
-    url = url + `&targetDt=20231129`;
+    url = url + `&targetDt=${dt}`;
 
     // console.log(url) ;
     fetch(url)
       .then(resp => resp.json())
       .then(data => setBoxlist(data.boxOfficeResult.dailyBoxOfficeList))
       .catch(err => console.log(err))
+  }
 
+  //날짜변경시 호출
+  const handleChange = () => {
+    getFetchData(rfDt.current.value.replaceAll('-',''));
+  }
+  
+  // Ref 변수를 사용하지 않을 경우
+  // const handleChange = (e) => {
+  //   getFetchData(e.target.value.replaceAll('-',''));
+  // }
+
+  useEffect(() => {
+    let tmYesterday = new Date();
+    tmYesterday.setDate(tmYesterday.getDate()-1);
+    tmYesterday = tmYesterday.toISOString().slice(0,10) ;
+    
+    setYesterday(tmYesterday) ;
+    console.log(tmYesterday)
+    getFetchData(tmYesterday.replaceAll('-','')) ;
   }, []);
 
   //boxlist 변경시 실행
@@ -66,6 +87,20 @@ export default function BoxOffice() {
         <div className="flex m-8">
           <BiCameraMovie className="text-5xl text-sky-800 mx-3" />
           <TailH1 title="박스오피스" />
+      
+        </div>
+        <div className="flex m-4 w-full justify-center items-center">
+          <label htmlFor="dt"
+                className="inline-flex justify-center items-center text-lg mx-1 px-2 h-10"
+          >
+            날짜선택</label>
+          <input type='date' 
+                 id='dt'
+                 ref={rfDt}
+                 max={yesterday}
+                 className="bg-green-50 mx-1 px-2 h-10 w-1/4 border border-green-500 text-green-900 dark:text-green-400 placeholder-green-700 dark:placeholder-green-500 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 "
+                 onChange={handleChange}
+          />
         </div>
         <div className="relative overflow-x-auto w-3/4 shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

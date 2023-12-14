@@ -5,7 +5,8 @@ import './App.css';
 // import Lotto from './05/Lotto';
 // import BoxOffice from './06/BoxOffice';
 // import Frcst from './07/Frcst';
-import RefTest from './08/RefTest';
+// import RefTest from './08/RefTest';
+import Traffic from './09/Traffic';
 
 function App() {
   return (     
@@ -15,7 +16,8 @@ function App() {
     // <Lotto />
     // <BoxOffice />
     // <Frcst />
-    <RefTest />
+    // <RefTest />
+    <Traffic />
   );
 }
 
