@@ -13,6 +13,8 @@ export default function Traffic() {
   const [selC2, setSelC2] = useState();     //선택된 중분류
 
   const [detail, setDetail] = useState() ;  //상세 정보
+  //상세정보 보기 키순
+  const detailKey = ['사고건수', '사망자수', '중상자수', '경상자수', '부상신고자수'] ;
 
   //데이터 불러오기 
   const getData = async () => {
@@ -81,7 +83,28 @@ export default function Traffic() {
     let tm = tdata.filter((item) => item.사고유형_대분류 === selC1 &&
                                     item.사고유형_중분류 === selC2)
     tm = tm[0] ;
-    console.log("detail", tm)                                
+    console.log("detail", tm)          
+
+    if (tm === undefined) return ;
+    tm = detailKey.map((k, idx) => <div className='flex flex-col' key={`d1${idx}`}>
+                                    <div className='inline-flex 
+                                                    justify-center 
+                                                    items-center 
+                                                    mx-2
+                                                     bg-sky-900
+                                                     text-white
+                                                    p-2'>{k}</div>
+                                    <div className='inline-flex 
+                                                    justify-center 
+                                                    items-center  
+                                                    text-lg
+                                                    mx-2
+                                                    bg-sky-100
+                                                     text-sky-900
+                                                    p-2'>{parseInt(tm[k]).toLocaleString('ko-KR')}</div>
+                                   </div>
+                                    )
+    setDetail(tm);
   }, [selC2]);
 
   return (
@@ -91,6 +114,9 @@ export default function Traffic() {
         <div className='w-4/5 my-10'>
             {c1 && <TrafficNav title={'대분류'} carr={c1} sel={selC1} setSel={setSelC1} />}                     
             {c2 && <TrafficNav title={'중분류'} carr={c2} sel={selC2} setSel={setSelC2} />}                     
+        </div>
+        <div className='grid grid-cols-5 gap-2 w-4/5'>
+          {detail}
         </div>
       </div>
     </div>
