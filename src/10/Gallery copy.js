@@ -17,11 +17,8 @@ export default function Gallery() {
   //키워드 입력
   const kwInput = useRef();
 
-
-  //버튼 이벤트 처리
   const handleGetData = async (e) => {
-    e.preventDefault();
-
+    if (e.key !== "Enter") e.preventDefault();
     //키워드 인코딩
     let enkw = encodeURI(kwInput.current.value);
     if (enkw === '') {
@@ -54,20 +51,18 @@ export default function Gallery() {
     kwInput.current.value = '';
   }
 
+  const handleEnter = (e) => {
+    if (e.key === "Enter") handleGetData(e);
+  };
+
   //tdata변경
   useEffect(() => {
     console.log("tdata=", tdata);
-    
-    let tm = tdata.map((item, idx) => 
-          <TailCard imgSrc={item.galWebImageUrl.replace('http://', 'https://')}
-          key={`card${idx}`}
-          title={item.galTitle}
-          subtitle={item.galPhotographyLocation}
-          tags={item.galSearchKeyword} />       
-    );
 
-    setTags(tm) ;
+    
+    
   }, [tdata])
+
   return (
     <div className="container mx-auto w-full h-screen">
       <div className="flex flex-col justify-top items-center w-full my-8">
@@ -81,14 +76,18 @@ export default function Gallery() {
                                                    bg-gray-50 border border-gray-300
                                                    text-gray-900 text-sm rounded-lg
                                                    focus:ring-blue-500 focus:border-blue-500 
-                                                   block w-full p-2.5" 
+                                                   block w-full p-2.5"
+              onKeyDown={handleEnter}
               placeholder="키워드입력" required />
           </div>
-          <TailButton caption=' 확 인 ' bcolor='sky' handleClick={handleGetData} />
-          <TailButton caption=' 취 소 ' bcolor='sky' handleClick={handleResetData} />
+          <TailButton caption=' 확 인 ' bcolor='sky' handleClick={(e) => handleGetData(e)} />
+          <TailButton caption=' 취 소 ' bcolor='sky' handleClick={(e) => handleResetData(e)} />
         </form>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {tags}
+        <div>
+          <TailCard imgSrc={"https://tong.visitkorea.or.kr/cms2/website/61/2952361.jpg"}
+            title={"광안리해수욕장"}
+            subtitle={"부산광역시 수영구 광안동"}
+            tags={"광안리해수욕장, 부산광역시 수영구, 광안리해변, 바닷가, 바다, 부산 광안대교, 다이아몬드 브릿지, 별바다부산, 부산야간관광"} />
         </div>
       </div>
 

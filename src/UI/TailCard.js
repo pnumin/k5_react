@@ -6,6 +6,9 @@ export default function TailCard({ imgSrc, title, subtitle, tags }) {
       {item}
     </span>
   )
+
+  sps = sps.length === 0 ? '' : sps 
+
   return (
     <div className="max-w-sm rounded overflow-hidden shadow-lg">
       <img className="w-full" src={imgSrc} alt={title} />
