@@ -10,8 +10,8 @@ import './App.css';
 // import Gallery from './10/Gallery';
 // import Festival from './11/Festival' ;
 // import Rmain from './12/Rmain';
-import Frcst from './13/Frcst';
-
+// import Frcst from './13/Frcst';
+import FrcstMain from './13/FrcstMain';
 function App() {
   return (     
     // <LogoMain />    
@@ -25,7 +25,8 @@ function App() {
     // <Gallery />
     // <Festival />
     // <Rmain />
-    <Frcst />
+    // <Frcst />
+    <FrcstMain />
   );
 }
 
