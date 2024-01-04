@@ -11,7 +11,7 @@ export default function Like() {
   }
 
   const handleDown = () => {
-    if (cnt != 0 ) setCnt(cnt-1) ;
+    if (cnt !== 0 ) setCnt(cnt-1) ;
     console.log("down", cnt)
   }
 
